@@ -1,0 +1,113 @@
+import tkinter as tk
+from tkinter import messagebox
+
+# Questions du quiz
+questions = [
+    "Lorsque vous pensez aux investissements, quelle phrase vous semble la plus vraie ?",
+    "À quelle fréquence consultez-vous vos investissements ?",
+    "Que faites-vous si un investissement perd soudainement 20 % en une journée ?",
+    "Quelle est votre expérience en matière d’investissement ?",
+    "Pour combien de temps envisagez-vous de conserver vos investissements crypto ?",
+    "Quel serait votre investissement idéal ?",
+    "Votre objectif principal en investissant est de…",
+    "Quelle part de votre épargne totale êtes-vous prêt à investir en crypto-monnaies ?",
+    "Quand vous entendez parler d’un projet crypto prometteur mais risqué, que faites-vous ?",
+    "Préférez-vous un investissement en croissance lente et stable ou en forte fluctuation ?",
+    "À quelle fréquence pensez-vous acheter ou vendre des crypto-monnaies ?",
+    "Comment réagiriez-vous si le marché crypto entrait dans une période de baisse prolongée ?",
+    "Dans quel type d’actif avez-vous le plus confiance ?",
+    "En cas de gains importants, quelle est votre stratégie ?",
+    "Quelle est votre vision de l’avenir des crypto-monnaies ?",
+    "Quelle part de votre épargne êtes-vous prêt à perdre sans que cela n’impacte vos finances ?",
+    "Êtes-vous du genre à suivre les tendances du marché ou à rester sur vos positions ?",
+    "Avez-vous un plan de sortie pour vos investissements crypto ?",
+    "Comment vous informez-vous sur les crypto-monnaies ?",
+    "Comment évalueriez-vous votre approche vis-à-vis des risques et des opportunités en crypto ?"
+]
+
+# Options de réponses et points associés
+options = [
+    ["A. La sécurité du capital est prioritaire", "B. Croissance stable avec peu de risque", "C. Prêt à des risques mesurés", "D. Risque significatif pour des rendements élevés"],
+    ["A. Rarement, peut-être une fois par mois", "B. Toutes les deux semaines", "C. Une fois par semaine", "D. Quotidiennement"],
+    ["A. Vendre pour limiter les pertes", "B. S'inquiéter mais attendre", "C. Acheter davantage", "D. Doubler mon investissement"],
+    ["A. Très peu d’expérience", "B. Quelques placements dans des produits sûrs", "C. Expérimenté avec divers actifs", "D. Solide expérience, y compris à haut risque"],
+    ["A. Plus de 3 ans", "B. 1 à 3 ans", "C. Entre 6 mois et 1 an", "D. Quelques semaines ou moins"],
+    ["A. Placement stable avec rendement faible mais garanti", "B. Actif sûr avec potentiel de croissance à long terme", "C. Actif avec potentiel de gain même s’il est volatile", "D. Actif qui peut doubler en un mois, même risqué"],
+    ["A. Protéger mon capital de l’inflation", "B. Diversifier mon épargne de manière équilibrée", "C. Générer des gains significatifs", "D. Maximiser les rendements rapidement"],
+    ["A. Moins de 10 %", "B. 10 à 20 %", "C. 20 à 50 %", "D. Plus de 50 %"],
+    ["A. Je n’investis pas, trop risqué pour moi", "B. Recherche et considération si solide", "C. Petite position pour tester", "D. J’investis sans hésitation"],
+    ["A. Croissance lente et stable", "B. Stable avec pics occasionnels", "C. Croissance rapide avec fluctuations modérées", "D. Forte fluctuation pour gains rapides"],
+    ["A. Rarement, peut-être une fois par an", "B. Occasionnellement en fonction des conditions", "C. Régulièrement, tous les mois ou trimestres", "D. Fréquemment, dès qu’une opportunité se présente"],
+    ["A. Me retirer pour préserver mon capital", "B. Observer et attendre le bon moment", "C. Accumuler pour faire baisser le coût moyen", "D. Investir plus pour profiter de la baisse des prix"],
+    ["A. Stablecoins et grandes cryptos comme Bitcoin", "B. Grandes capitalisations et quelques altcoins", "C. Altcoins à fort potentiel, modérément risqués", "D. Projets DeFi, NFT ou nouvelles cryptos"],
+    ["A. Prendre des profits dès que possible", "B. Prendre une partie et laisser le reste", "C. Laisser croître en surveillant", "D. Réinvestir pour maximiser"],
+    ["A. Opportunité à tester prudemment", "B. Moyen de diversification à long terme", "C. Révolution technologique avec fort potentiel", "D. Chance unique de rendements rapides"],
+    ["A. Moins de 5 %", "B. 5 à 10 %", "C. 10 à 20 %", "D. Plus de 20 %"],
+    ["A. Ne suis pas les tendances, garde mes positions", "B. Reste attentif mais sans investir dans les tendances", "C. Suis modérément les tendances", "D. Prêt à changer dès qu’une tendance apparaît"],
+    ["A. Objectifs précis et sortie dès qu’ils sont atteints", "B. Plan de sortie flexible basé sur des niveaux de prix", "C. Garde mes actifs tant qu’ils sont rentables", "D. Pas de plan de sortie, s’adapte au marché"],
+    ["A. Sources générales et conseils prudents", "B. Sources spécialisées sans y consacrer trop de temps", "C. Analyse régulière des actualités et tendances", "D. Opportunités sur réseaux sociaux et forums"],
+    ["A. Très prudente, j’évite les pertes", "B. Raisonnée avec des risques limités", "C. Modérément audacieuse pour des gains", "D. Audacieuse, opportunités avant risques"]
+]
+
+# Interprétation des scores
+interpretations = [
+    (20, 30, "Conservateur", "Vous êtes un investisseur prudent, préférant la sécurité de votre capital et les gains modestes mais stables."),
+    (31, 50, "Équilibré", "Vous êtes prêt à prendre certains risques pour augmenter vos rendements, mais sans trop compromettre de capital."),
+    (51, 70, "Dynamique", "Vous avez une tolérance au risque moyenne à élevée et cherchez à maximiser vos gains sans crainte de la volatilité."),
+    (71, 80, "Spéculatif", "Vous aimez l'adrénaline des investissements à fort risque et à fort potentiel de rendement.")
+]
+
+class QuizApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Quel est votre profil d'investisseur dans les crypto-monnaies ?")
+        self.question_index = 0
+        self.score = 0
+        self.var = tk.IntVar()
+        self.create_widgets()
+
+    def create_widgets(self):
+        self.question_label = tk.Label(self.root, text=questions[self.question_index], wraplength=400, font=("Arial", 12))
+        self.question_label.pack(pady=10)
+
+        self.radio_buttons = []
+        for i in range(4):
+            rb = tk.Radiobutton(self.root, text=options[self.question_index][i], variable=self.var, value=i+1, font=("Arial", 10), command=self.update_score)
+            rb.pack(anchor="w")
+            self.radio_buttons.append(rb)
+
+        self.next_button = tk.Button(self.root, text="Suivant", command=self.next_question)
+        self.next_button.pack(pady=10)
+
+    def update_score(self):
+        self.score += self.var.get()
+
+    def next_question(self):
+        if self.var.get() == 0:
+            messagebox.showwarning("Attention", "Veuillez sélectionner une réponse avant de continuer.")
+            return
+
+        self.update_score()
+        self.question_index += 1
+
+        if self.question_index >= len(questions):
+            self.show_result()
+        else:
+            self.show_next_question()
+
+    def show_next_question(self):
+        self.question_label.config(text=questions[self.question_index])
+        for i, rb in enumerate(self.radio_buttons):
+            rb.config(text=options[self.question_index][i])
+        self.var.set(0)
+
+    def show_result(self):
+        for (min_score, max_score, title, description) in interpretations:
+            if min_score <= self.score <= max_score:
+                messagebox.showinfo("Résultat", f"Score : {self.score}\nProfil : {title}\n{description}")
+                break
+        self.root.quit()
+
+root = tk.Tk()
+app = QuizApp(root)
+root.mainloop()
